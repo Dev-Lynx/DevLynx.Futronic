@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <Platforms>x64;x86</Platforms>
+	<UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+	<PropertyGroup>
+		<Reference>
+			<HintPath>$(OutputPath)\ftrScanAPI.dll</HintPath>
+		</Reference>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ContentWithTargetPath Include="%40dependencies\$(Platform)\ftrScanAPI.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<TargetPath>.\ftrScanAPI.dll</TargetPath>
+		</ContentWithTargetPath>
+	</ItemGroup>
+</Project>
