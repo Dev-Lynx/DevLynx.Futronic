@@ -18,7 +18,7 @@ namespace DevLynx.Futronic
 
     public class FingerprintDevice : IDisposable
     {
-        const int CHECK_INTERVAL = 10;
+        const int CHECK_INTERVAL = 100;
         const int FINGER_CONTRAST_THRESHOLD = 800;
 
         private readonly IntPtr _handle;
@@ -40,10 +40,10 @@ namespace DevLynx.Futronic
         private IMemoryOwner<byte> _memHandle;
 
         public LightState Light { get; }
-        public bool FingerPresent { get; private set; }
+        public bool FingerActive { get; private set; }
 
-        public event EventHandler FingerDetected;
-        public event EventHandler FingerReleased;
+        public event EventHandler FingerPresent;
+        public event EventHandler FingerAbsent;
 
         internal FingerprintDevice(IntPtr handle, int port, string serialNumber)
         {
@@ -102,27 +102,26 @@ namespace DevLynx.Futronic
 
             try
             {
-
                 bool fingerPresent = FutronicAPI.ftrScanIsFingerPresent(_handle, out var state);
-                bool hadFinger = FingerPresent;
+                bool hadFinger = FingerActive;
 
                 if (fingerPresent != hadFinger)
                 {
-                    FingerPresent = hadFinger;
+                    FingerActive = fingerPresent;
 
                     if (fingerPresent)
                     {
-                        FingerDetected?.Invoke(this, EventArgs.Empty);
+                        FingerPresent?.Invoke(this, EventArgs.Empty);
                     }
                     else
                     {
-                        FingerReleased?.Invoke(this, EventArgs.Empty);
+                        FingerAbsent?.Invoke(this, EventArgs.Empty);
                     }
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                Console.WriteLine(ex);
+                //Console.WriteLine(ex);
             }
             finally
             {

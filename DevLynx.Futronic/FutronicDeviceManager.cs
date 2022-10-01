@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using DevLynx.Futronic.Extensions;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using static DevLynx.Futronic.FutronicAPI;
 
 namespace DevLynx.Futronic
 {
-    public class FutronicDeviceManager
+    public partial class FutronicDeviceManager
     {
         const int CHECK_INTERVAL = 3000;
 
@@ -18,11 +14,18 @@ namespace DevLynx.Futronic
         private bool _isRunning = false;
 
         public IReadOnlyDictionary<int, FingerprintDevice> Devices => _devices;
+        
         public event EventHandler<FingerprintDevice> DeviceReady;
+        public event EventHandler<FingerprintDevice> DeviceDisconnected;
 
+        static FutronicDeviceManager()
+        {
+        }
 
         public FutronicDeviceManager()
         {
+            EnsureInit();
+
             _devices = new Dictionary<int, FingerprintDevice>(FTR_MAX_INTERFACE_NUMBER);
             _timer = new Timer(HandleTick, null, -1, -1);
         }
@@ -80,7 +83,9 @@ namespace DevLynx.Futronic
             {
                 if (!_devices.Remove(port, out FingerprintDevice device))
                     return;
-                device.Dispose();
+
+                CodeExtensions.Try(() => device.Dispose());
+                DeviceDisconnected?.Invoke(this, device);
             }
             catch
             {

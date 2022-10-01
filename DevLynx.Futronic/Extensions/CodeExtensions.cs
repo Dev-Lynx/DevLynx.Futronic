@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DevLynx.Futronic.Extensions
 {
-    public static class CodeExtensions
+    internal static class CodeExtensions
     {
         public static void Try(this Action action)
         {

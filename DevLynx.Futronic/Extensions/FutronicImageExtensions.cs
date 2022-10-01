@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Ink;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.Media3D;
 
 namespace DevLynx.Futronic.Extensions
 {
@@ -57,6 +58,46 @@ namespace DevLynx.Futronic.Extensions
 
                 bitmap.AddDirtyRect(new Int32Rect(0, 0, width, height));
                 bitmap.Unlock();
+            }
+            catch
+            {
+            }
+        }
+
+        public static void ClearImage(WriteableBitmap bitmap)
+        {
+            try
+            {
+                bitmap.Lock();
+
+                if (bitmap.Format != PixelFormats.Bgr32)
+                    return;
+
+                unsafe
+                {
+                    byte* buff = (byte*)bitmap.BackBuffer.ToPointer();
+                    int stride = bitmap.BackBufferStride;
+
+                    byte b = 0xFF;
+                    int height = bitmap.PixelHeight;
+                    int width = bitmap.PixelWidth;
+
+                    for (int y = 0; y < height; y++)
+                    {
+                        for (int x = 0; x < width; x++)
+                        {
+                            int loc = (y * stride) + (x * 4);
+
+                            buff[loc] = b;
+                            buff[loc + 1] = b;
+                            buff[loc + 2] = b;
+                            buff[loc + 3] = 0xFF;
+                        }
+                    }
+
+                    bitmap.AddDirtyRect(new Int32Rect(0, 0, width, height));
+                    bitmap.Unlock();
+                }
             }
             catch
             {

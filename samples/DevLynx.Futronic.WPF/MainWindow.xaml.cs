@@ -32,6 +32,10 @@ namespace DevLynx.Futronic.WPF
         FutronicDeviceManager FutronicManager { get; set; }
         FingerprintDevice Device { get; set; }
 
+        WriteableBitmap _bitmap;
+        DispatcherTimer _timer;
+
+
         void Initialize()
         {
             FutronicManager = new FutronicDeviceManager();
@@ -48,23 +52,48 @@ namespace DevLynx.Futronic.WPF
             Device = e;
             Device.StartCapture();
 
+            Device.FingerPresent += (s, e) => BeginCapture();
+            Device.FingerAbsent += (s, e) => StopCapture();
+
+
             Dispatcher.Invoke(() =>
             {
-                WriteableBitmap bitmap = new WriteableBitmap(Device.FrameWidth, Device.FrameHeight,
-                96, 96, PixelFormats.Bgr32, null);
-                _image.Source = bitmap;
+                _bitmap = new WriteableBitmap(Device.FrameWidth, Device.FrameHeight,
+                    96, 96, PixelFormats.Bgr32, BitmapPalettes.BlackAndWhite);
+                _image.Source = _bitmap;
 
-                DispatcherTimer timer = new DispatcherTimer(DispatcherPriority.Background, Dispatcher);
-                timer.Interval = TimeSpan.FromMilliseconds(60);
-                timer.Start();
-
-                timer.Tick += (s, e) =>
-                {
-                    Device.GetImage(bitmap);
-                };
+                FutronicImageExtensions.ClearImage(_bitmap);
+                //Device.GetImage(_bitmap);
             });
+        }
 
-           
+        void BeginCapture()
+        {
+            if (_timer == null)
+            {
+                _timer = new DispatcherTimer(DispatcherPriority.Background, Dispatcher);
+                _timer.Interval = TimeSpan.FromMilliseconds(60);
+                _timer.Tick += OnDispatcherTimerTick;
+            }
+
+            _timer.Start();
+        }
+
+        void StopCapture()
+        {
+            Console.WriteLine("Stopping Capture");
+
+            Dispatcher.Invoke(() =>
+            {
+                FutronicImageExtensions.ClearImage(_bitmap);
+                _timer.Stop();
+            });
+            
+        }
+
+        private void OnDispatcherTimerTick(object sender, EventArgs e)
+        {
+            Device.GetImage(_bitmap);
         }
     }
 }
