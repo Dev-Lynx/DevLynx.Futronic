@@ -7,9 +7,9 @@ DevLynx.Futronic is a .NET wrapper around the Futronic Fingerprint SDK.
 ## Getting Started
 
 ``` C#
-    FutronicManager = FutronicManager.Instance;
-    FutronicManager.DeviceReady += DeviceReady;
-    FutronicManager.Start();
+FutronicManager = FutronicManager.Instance;
+FutronicManager.DeviceReady += DeviceReady;
+FutronicManager.Start();
 ```
 
 For further simplification, `FutronicProvider` can be used in `WPF` to simplify the capture process.
