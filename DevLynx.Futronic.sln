@@ -5,7 +5,11 @@ VisualStudioVersion = 17.3.32901.215
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevLynx.Futronic", "DevLynx.Futronic\DevLynx.Futronic.csproj", "{5A0E2F0E-3EB6-402F-B072-DB5660697A5C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevLynx.Futronic.WPF", "samples\DevLynx.Futronic.WPF\DevLynx.Futronic.WPF.csproj", "{E7154F46-304C-436E-A078-ABDFB4D989BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevLynx.Futronic.Samples.WPF", "samples\DevLynx.Futronic.WPF\DevLynx.Futronic.Samples.WPF.csproj", "{E7154F46-304C-436E-A078-ABDFB4D989BF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{19D1EB1A-AE31-4289-98C7-AA698300E025}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevLynx.Futronic.WPF", "DevLynx.Futronic.WPF\DevLynx.Futronic.WPF.csproj", "{60449FDD-391C-44EE-B526-A0E7F85B6395}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,9 +45,24 @@ Global
 		{E7154F46-304C-436E-A078-ABDFB4D989BF}.Release|x64.Build.0 = Release|x64
 		{E7154F46-304C-436E-A078-ABDFB4D989BF}.Release|x86.ActiveCfg = Release|x86
 		{E7154F46-304C-436E-A078-ABDFB4D989BF}.Release|x86.Build.0 = Release|x86
+		{60449FDD-391C-44EE-B526-A0E7F85B6395}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60449FDD-391C-44EE-B526-A0E7F85B6395}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60449FDD-391C-44EE-B526-A0E7F85B6395}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{60449FDD-391C-44EE-B526-A0E7F85B6395}.Debug|x64.Build.0 = Debug|Any CPU
+		{60449FDD-391C-44EE-B526-A0E7F85B6395}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{60449FDD-391C-44EE-B526-A0E7F85B6395}.Debug|x86.Build.0 = Debug|Any CPU
+		{60449FDD-391C-44EE-B526-A0E7F85B6395}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60449FDD-391C-44EE-B526-A0E7F85B6395}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60449FDD-391C-44EE-B526-A0E7F85B6395}.Release|x64.ActiveCfg = Release|Any CPU
+		{60449FDD-391C-44EE-B526-A0E7F85B6395}.Release|x64.Build.0 = Release|Any CPU
+		{60449FDD-391C-44EE-B526-A0E7F85B6395}.Release|x86.ActiveCfg = Release|Any CPU
+		{60449FDD-391C-44EE-B526-A0E7F85B6395}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E7154F46-304C-436E-A078-ABDFB4D989BF} = {19D1EB1A-AE31-4289-98C7-AA698300E025}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {83E00976-C475-4BE0-8989-518F3D347FC7}

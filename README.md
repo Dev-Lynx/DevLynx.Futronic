@@ -7,28 +7,43 @@ DevLynx.Futronic is a .NET wrapper around the Futronic Fingerprint SDK.
 ## Getting Started
 
 ``` C#
-    FutronicManager = new FutronicDeviceManager();
+    FutronicManager = FutronicManager.Instance;
     FutronicManager.DeviceReady += DeviceReady;
     FutronicManager.Start();
 ```
 
-Once your Futronic Device has been initialized, You can continuously fetch an image with the following:
+For further simplification, `FutronicProvider` can be used in `WPF` to simplify the capture process.
 
 ```C#
-
-    FingerprintDevice device;
-    WriteableBitmap bitmap = new WriteableBitmap(device.FrameWidth, device.FrameHeight,
-                96, 96, PixelFormats.Bgr32, null);
-
-    //...
-    DispatcherTimer timer = new DispatcherTimer(DispatcherPriority.Background, Dispatcher);
-    timer.Interval = TimeSpan.FromMilliseconds(60);
-    timer.Start();
-
-    timer.Tick += (s, e) =>
+/// <summary>
+/// Interaction logic for MainWindow.xaml
+/// </summary>
+public partial class MainWindow : Window
+{
+    public MainWindow()
     {
-        device.GetImage(bitmap);
-    };
+        InitializeComponent();
+
+        Loaded += (s, e) => Initialize();
+    }
+
+    FutronicProvider FutronicProvider { get; set; }
+
+    void Initialize()
+    {
+        FutronicProvider = new FutronicProvider();
+
+        FutronicProvider.PropertyChanged += (s, e) =>
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(FutronicProvider.Bitmap):
+                    _image.Source = FutronicProvider.Bitmap;
+                    break;
+            }
+        };
+    }
+}
 ```
 
 More examples are included in the [sample folder](./samples/).

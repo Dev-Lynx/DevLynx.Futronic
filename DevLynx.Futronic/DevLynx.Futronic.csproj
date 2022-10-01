@@ -12,7 +12,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ContentWithTargetPath Include="%40dependencies\x86\ftrScanAPI.dll" TargetPath="x86\ftrScanAPI.dll" CopyToOutputDirectory="PreserveNewest"/>
-		<ContentWithTargetPath Include="%40dependencies\x64\ftrScanAPI.dll" TargetPath="x64\ftrScanAPI.dll" CopyToOutputDirectory="PreserveNewest"/>
+		<ContentWithTargetPath Include="%40dependencies\x86\ftrScanAPI.dll" TargetPath="x86\ftrScanAPI.dll" CopyToOutputDirectory="PreserveNewest" />
+		<ContentWithTargetPath Include="%40dependencies\x64\ftrScanAPI.dll" TargetPath="x64\ftrScanAPI.dll" CopyToOutputDirectory="PreserveNewest" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Providers\" />
 	</ItemGroup>
 </Project>

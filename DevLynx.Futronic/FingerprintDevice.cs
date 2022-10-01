@@ -151,5 +151,18 @@ namespace DevLynx.Futronic
             {
             }
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is not FingerprintDevice device)
+                return false;
+
+            return _handle == device._handle && _port == device._port;
+        }
+
+        public override int GetHashCode()
+        {
+            return CodeExtensions.GenerateHashCode(_handle, _port);
+        }
     }
 }

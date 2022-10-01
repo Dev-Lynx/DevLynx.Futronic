@@ -18,11 +18,7 @@ namespace DevLynx.Futronic
         public event EventHandler<FingerprintDevice> DeviceReady;
         public event EventHandler<FingerprintDevice> DeviceDisconnected;
 
-        static FutronicDeviceManager()
-        {
-        }
-
-        public FutronicDeviceManager()
+        internal FutronicDeviceManager()
         {
             EnsureInit();
 
@@ -73,6 +69,8 @@ namespace DevLynx.Futronic
 
             FingerprintDevice device = new FingerprintDevice(handle, port, serial);
             _devices[port] = device;
+
+            //FutronicAPI.ftrScanSetOptions(handle, _CONFIG_OPTIONS.ELIMINATE_BACKGROUND, _CONFIG_OPTIONS.ELIMINATE_BACKGROUND);
 
             DeviceReady?.Invoke(this, device);
         }

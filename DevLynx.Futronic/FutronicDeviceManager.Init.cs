@@ -7,6 +7,19 @@ namespace DevLynx.Futronic
     {
         static bool _init;
 
+        static FutronicDeviceManager _instance;
+        public static FutronicDeviceManager Instance 
+        {
+            get
+            {
+                if (_instance == null)
+                    Initialize();
+
+                return _instance;
+            }
+            private set => _instance = value;
+        }
+
         static void EnsureInit()
         {
             if (_init) return;
@@ -26,6 +39,14 @@ namespace DevLynx.Futronic
                 throw new NotSupportedException($"Failed to load the Futronic Library. The Library may not be in the correct format.");
 
             _init = true;
+        }
+
+        internal static FutronicDeviceManager Initialize()
+        {
+            EnsureInit();
+
+            Instance = new FutronicDeviceManager();
+            return Instance;
         }
     }
 }
