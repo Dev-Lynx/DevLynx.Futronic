@@ -8,7 +8,7 @@ using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DevLynx.Futronic.WPF
+namespace DevLynx.Futronic.Samples.WPF
 {
     /// <summary>
     /// Gets the windows console up and running while your WPF application is still on.
@@ -100,7 +100,7 @@ namespace DevLynx.Futronic.WPF
 
         static void InvalidateOutAndError()
         {
-            Type type = typeof(System.Console);
+            Type type = typeof(Console);
 
             string outField = "s_out";
             string errorField = "s_error";

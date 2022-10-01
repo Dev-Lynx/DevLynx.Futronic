@@ -29,71 +29,21 @@ namespace DevLynx.Futronic.WPF
             Loaded += (s, e) => Initialize();
         }
 
-        FutronicDeviceManager FutronicManager { get; set; }
-        FingerprintDevice Device { get; set; }
-
-        WriteableBitmap _bitmap;
-        DispatcherTimer _timer;
-
+        FutronicProvider FutronicProvider { get; set; }
 
         void Initialize()
         {
-            FutronicManager = new FutronicDeviceManager();
-            FutronicManager.DeviceReady += DeviceReady;
+            FutronicProvider = new FutronicProvider();
 
-            FutronicManager.Start();
-        }
-
-        private void DeviceReady(object sender, FingerprintDevice e)
-        {
-            if (Device != null)
-                Device.Dispose();
-
-            Device = e;
-            Device.StartCapture();
-
-            Device.FingerPresent += (s, e) => BeginCapture();
-            Device.FingerAbsent += (s, e) => StopCapture();
-
-
-            Dispatcher.Invoke(() =>
+            FutronicProvider.PropertyChanged += (s, e) =>
             {
-                _bitmap = new WriteableBitmap(Device.FrameWidth, Device.FrameHeight,
-                    96, 96, PixelFormats.Bgr32, BitmapPalettes.BlackAndWhite);
-                _image.Source = _bitmap;
-
-                FutronicImageExtensions.ClearImage(_bitmap);
-                //Device.GetImage(_bitmap);
-            });
-        }
-
-        void BeginCapture()
-        {
-            if (_timer == null)
-            {
-                _timer = new DispatcherTimer(DispatcherPriority.Background, Dispatcher);
-                _timer.Interval = TimeSpan.FromMilliseconds(60);
-                _timer.Tick += OnDispatcherTimerTick;
-            }
-
-            _timer.Start();
-        }
-
-        void StopCapture()
-        {
-            Console.WriteLine("Stopping Capture");
-
-            Dispatcher.Invoke(() =>
-            {
-                FutronicImageExtensions.ClearImage(_bitmap);
-                _timer.Stop();
-            });
-            
-        }
-
-        private void OnDispatcherTimerTick(object sender, EventArgs e)
-        {
-            Device.GetImage(_bitmap);
+                switch (e.PropertyName)
+                {
+                    case nameof(FutronicProvider.Bitmap):
+                        _image.Source = FutronicProvider.Bitmap;
+                        break;
+                }
+            };
         }
     }
 }

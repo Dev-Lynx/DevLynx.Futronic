@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\DevLynx.Futronic\DevLynx.Futronic.csproj" />
+    <ProjectReference Include="..\..\DevLynx.Futronic.WPF\DevLynx.Futronic.WPF.csproj" />
   </ItemGroup>
 
 </Project>
