@@ -1,4 +1,5 @@
-﻿using DevLynx.Futronic.Extensions;
+﻿using Accessibility;
+using DevLynx.Futronic.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -24,6 +25,27 @@ namespace DevLynx.Futronic.WPF
         public WriteableBitmap Bitmap => _bitmap;
         public FingerprintDevice CurrentDevice => _device;
 
+        private double _fps = 10;
+        public virtual double FPS 
+        {
+            get => _fps;
+            set
+            {
+                if (_fps > 60)
+                    value = 60;
+                else if (_fps <= 0)
+                    value = 10;
+
+                if (value == _fps)
+                    return;
+
+                _fps = value;
+
+                if (_timer != null)
+                    _timer.Interval = TimeSpan.FromSeconds(1 / FPS);
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public FutronicProvider()
@@ -33,7 +55,9 @@ namespace DevLynx.Futronic.WPF
             _manager.DeviceReady += OnDeviceReady;
             _manager.DeviceDisconnected += OnDeviceDisconneted;
 
-            _manager.Start();
+            if (_manager.Devices.Count > 0)
+                OnDeviceReady(this, _manager.Devices.Values.First());
+            else _manager.Start();
         }
 
         private void OnDeviceReady(object sender, FingerprintDevice e)
@@ -90,7 +114,7 @@ namespace DevLynx.Futronic.WPF
             if (_timer == null)
             {
                 _timer = new DispatcherTimer(DispatcherPriority.Background, Dispatcher);
-                _timer.Interval = TimeSpan.FromMilliseconds(60);
+                _timer.Interval = TimeSpan.FromSeconds(1 / FPS);
                 _timer.Tick += OnDispatcherTimerTick;
             }
 

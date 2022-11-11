@@ -2,11 +2,14 @@
 using System;
 using System.Buffers;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection.Metadata;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using static DevLynx.Futronic.FutronicAPI;
 
 namespace DevLynx.Futronic
 {
@@ -18,7 +21,7 @@ namespace DevLynx.Futronic
 
     public class FingerprintDevice : IDisposable
     {
-        const int CHECK_INTERVAL = 100;
+        const int CHECK_INTERVAL = 500;
         const int FINGER_CONTRAST_THRESHOLD = 800;
 
         private readonly IntPtr _handle;
@@ -92,9 +95,9 @@ namespace DevLynx.Futronic
                     return Span<byte>.Empty;
             }
 
-            return span;
+            return span.Slice(0, _dim.nImageSize);
         }
-
+        
         private void HandleTick(object? obj)
         {
             if (Interlocked.CompareExchange(ref _tick, 1, 0) != 0)
@@ -118,9 +121,14 @@ namespace DevLynx.Futronic
                         FingerAbsent?.Invoke(this, EventArgs.Empty);
                     }
                 }
+
+                //_FUTRONIC_ERROR lastErr = (_FUTRONIC_ERROR)Marshal.GetLastWin32Error();
+                //Console.WriteLine("Last device error is: {0}", lastErr);
             }
             catch
             {
+                //TraceSource source;
+                
                 //Console.WriteLine(ex);
             }
             finally

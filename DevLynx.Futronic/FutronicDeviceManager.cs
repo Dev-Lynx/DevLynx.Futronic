@@ -1,4 +1,5 @@
 ﻿using DevLynx.Futronic.Extensions;
+using System.Runtime.InteropServices;
 using System.Text;
 using static DevLynx.Futronic.FutronicAPI;
 
@@ -97,7 +98,7 @@ namespace DevLynx.Futronic
 
             try
             {
-                //int lastErr = ftrScanGetLastError();
+                //int lastErr = Marshal.GetLastWin32Error();
                 //Console.WriteLine("Last error is: {0}", lastErr);
 
                 InspectInterfaces();
